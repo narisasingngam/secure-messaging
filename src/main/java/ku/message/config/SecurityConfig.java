@@ -23,9 +23,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/home", "/signup", "/css/**", "/js/**").permitAll()
                 .anyRequest().authenticated();
 
-        http.formLogin()
-                .defaultSuccessUrl("/message", true)
-                .and().logout();
+        .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(
+                               new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+
+        .and()
+                .oauth2Login()
+                .defaultSuccessUrl("/home").permitAll()
+
+        .and()
+                 .logout()
+                  .logoutSuccessUrl("/home").permitAll();
     }
 
     @Override

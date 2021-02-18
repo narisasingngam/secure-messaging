@@ -29,11 +29,13 @@ public class MessageController {
     }
 
     @PostMapping("/message")
-    public String postMessage(@ModelAttribute Message message, Model model) {
+    public String postMessage(@ModelAttribute Message message, Model model, @AuthenticationPrincipal OAuth2User principal) {
+        message.setUser(principal.getAttribute("name"));
         repository.save(message);
         model.addAttribute("messages", repository.findAll());
         return "redirect:message";
     }
+
 
 
 }
