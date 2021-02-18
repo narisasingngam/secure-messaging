@@ -12,7 +12,8 @@ public class UserService {
     private UserRepository repository;
 
     @Autowired
-    private HashService hashService;
+    private PasswordEncoder passwordEncoder;
+
 
     public boolean isUsernameAvailable(String username) {
         return repository.findByUsername(username) == null;
@@ -24,11 +25,8 @@ public class UserService {
         newUser.setLastName(user.getLastName());
         newUser.setUsername(user.getUsername());
 
-        String salt = hashService.getSalt();
-        String hashedPassword =
-                hashService.getHashedValue(user.getPassword(), salt);
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
 
-        newUser.setSalt(salt);
         newUser.setPassword(hashedPassword);
 
         repository.save(newUser);

@@ -14,7 +14,6 @@ public class User {
     private String username;
     private String password;
     private String lastName;
-    private String salt;
     private String firstName;
 
     public long getId() {
@@ -40,15 +39,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
 
     public String getFirstName() {
         return firstName;
