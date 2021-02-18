@@ -13,11 +13,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+     @Autowired
+     private AuthenticationService authenticationService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/home", "/css/**", "/js/**").permitAll()
+                .antMatchers("/home", "/signup", "/css/**", "/js/**").permitAll()
                 .anyRequest().authenticated();
 
         http.formLogin()
@@ -27,10 +30,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("usa")
-                .password(encoder().encode("usa"))
-                .roles("USER");
+    auth.authenticationProvider(this.authenticationService);
+  @Override
+   public void configure(WebSecurity web) throws Exception {
+      web
+              .ignoring()
+              .antMatchers("/h2-console/**");
+   }
+
     }
 
     @Bean
